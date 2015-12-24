@@ -106,6 +106,31 @@ namespace Vectors
 			return this.Magnitude() <= TOLERANCE;
 		}
 		
+		public Vector CrossProduct(Vector v)
+		{
+			if(this.Dimension != 3 || v.Dimension != 3){
+				throw new Exception("Cross product only works on 3-dimensional vectors");
+			}
+			
+			// Formula: ( y1z2 - y2z1, -(x1z2 - x2z1), x1y2 - x2y1)
+			var newCoordinates = new List<double> {
+				this.Coordinates[1] * v.Coordinates[2] - this.Coordinates[2] * v.Coordinates[1],
+				-1 * (this.Coordinates[0] * v.Coordinates[2] - this.Coordinates[2] * v.Coordinates[0]),
+				this.Coordinates[0] * v.Coordinates[1] - this.Coordinates[1] * v.Coordinates[0],
+			};
+			return new Vector(newCoordinates);
+		}
+		
+		public double ParallelogramArea(Vector v)
+		{
+			return this.CrossProduct(v).Magnitude();
+		}
+		
+		public double TriangleArea(Vector v)
+		{
+			return 0.5 * this.ParallelogramArea(v);
+		}
+		
 		private Vector Apply(Func<double, double, double> func, Vector v)
 		{
 			if( this.Dimension != v.Dimension){

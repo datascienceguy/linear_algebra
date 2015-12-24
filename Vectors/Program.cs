@@ -29,6 +29,10 @@ namespace Vectors
             Console.WriteLine("Problem 5");
             Problem5();
             Console.WriteLine("---------------");            
+
+            Console.WriteLine("Problem 6");
+            Problem6();
+            Console.WriteLine("---------------"); 
         }
         
         private static void Problem1()
@@ -117,5 +121,21 @@ namespace Vectors
            v3.Projection(b3).Print();
            v3.Component(b3).Print();
         }         
+
+        private static void Problem6()
+        {
+           var v1 = new Vector(new List<double>{8.462, 7.893, -8.187});
+           var w1 = new Vector(new List<double>{6.984, -5.975, 4.778});
+           v1.CrossProduct(w1).Print();
+           
+           var v2 = new Vector(new List<double>{-8.987, -9.838, 5.031});
+           var w2 = new Vector(new List<double>{-4.268, -1.861, -8.866});
+           Console.WriteLine("Parallelogram area: " + v2.ParallelogramArea(w2));
+
+           var v3 = new Vector(new List<double>{1.5, 9.547, 3.691});
+           var w3 = new Vector(new List<double>{-6.007, 0.124, 5.772});
+           Console.WriteLine("Triangle area: " + v3.TriangleArea(w3));
+        }     
+   
     }
 }
