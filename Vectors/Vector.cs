@@ -88,6 +88,19 @@ namespace Vectors
 			return Math.Abs(this.Dot(v)) <= TOLERANCE;
 		}
 		
+		public Vector Projection(Vector b)
+		{
+			// Formula: (v dot unit vector of b) * unit vector of b
+			var scalar = this.Dot(b.Normalize()); 
+			return b.Normalize().MultiplyScalar(scalar);
+		}
+		
+		public Vector Component(Vector b)
+		{
+			var vParallel = this.Projection(b);
+			return this.Minus(vParallel);
+		}
+		
 		public bool IsZero()
 		{
 			return this.Magnitude() <= TOLERANCE;

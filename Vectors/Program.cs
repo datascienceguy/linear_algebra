@@ -25,6 +25,10 @@ namespace Vectors
             Console.WriteLine("Problem 4");
             Problem4();
             Console.WriteLine("---------------");
+            
+            Console.WriteLine("Problem 5");
+            Problem5();
+            Console.WriteLine("---------------");            
         }
         
         private static void Problem1()
@@ -96,6 +100,22 @@ namespace Vectors
            var v8 = new Vector(new List<double>{0, 0});
            Console.WriteLine("Parallel? " + v7.IsParallelTo(v8).ToString()); 
            Console.WriteLine("Orthoganal? " + v7.IsOrthoganalTo(v8).ToString()); 
-        }        
+        }       
+        
+        private static void Problem5()
+        {
+           var v1 = new Vector(new List<double>{3.039, 1.879});
+           var b1 = new Vector(new List<double>{0.825, 2.036});
+           v1.Projection(b1).Print();
+           
+           var v2 = new Vector(new List<double>{-9.88, -3.264, -8.159});
+           var b2 = new Vector(new List<double>{-2.155, -9.353, -9.473});
+           v2.Component(b2).Print();
+
+           var v3 = new Vector(new List<double>{3.009, -6.172, 3.692, -2.51});
+           var b3 = new Vector(new List<double>{6.404, -9.144, 2.759, 8.718});
+           v3.Projection(b3).Print();
+           v3.Component(b3).Print();
+        }         
     }
 }
