@@ -65,6 +65,17 @@ namespace Vectors
 
 		public bool IsEqualTo(Line l)
 		{
+			if(this.NormalVector.IsZero()){
+				if(! l.NormalVector.IsZero()){
+					return false;
+				} else {
+					var diff = this.Constant - l.Constant;
+					return IsNearZero(diff);
+				}
+			} else if(l.NormalVector.IsZero()){
+				return false;
+			}
+			
 			// Two lines are equal (coincidental lines) iff vector connecting point on each line is
 			// orthoganal to the lines normal vectors
 			var basePointDiff = this.BasePoint.Minus(l.BasePoint); // Vector connecting a point on each line 
@@ -95,9 +106,12 @@ namespace Vectors
 		
 		private int FirstNonzeroIndex(Vector v)
 		{
-			return v.Coordinates.FindIndex(c => Math.Abs(c) >= TOLERANCE);
+			return v.Coordinates.FindIndex(c => ! IsNearZero(c) );
 		}
 				
-		
+		private bool IsNearZero(double value)
+		{
+			return Math.Abs(value) < TOLERANCE;
+		}
 	}
 }
