@@ -26,6 +26,10 @@ namespace Vectors
             var l2 = new Line(n2, c2);            
             l1.Print();
             l2.Print();
+            var intersection1 = l1.FindIntersection(l2);
+            if(intersection1 != null){ intersection1.Print(); }
+            Console.WriteLine("Parallel? " + l1.IsParallelTo(l2).ToString());
+            Console.WriteLine("Equal? " + l1.IsEqualTo(l2).ToString());
 
             var n3 = new Vector(new List<double>{7.204, 3.182});
             var c3 = 8.68;
@@ -35,6 +39,10 @@ namespace Vectors
             var l4 = new Line(n4, c4);            
             l3.Print();
             l4.Print();
+            var intersection2 = l3.FindIntersection(l4);
+            if(intersection2 != null){ intersection2.Print(); }
+            Console.WriteLine("Parallel? " + l3.IsParallelTo(l4).ToString());
+            Console.WriteLine("Equal? " + l3.IsEqualTo(l4).ToString());
 
             var n5 = new Vector(new List<double>{1.182, 5.562});
             var c5 = 6.744;
@@ -44,6 +52,10 @@ namespace Vectors
             var l6 = new Line(n6, c6);            
             l5.Print();
             l6.Print();
+            var intersection3 = l5.FindIntersection(l6);
+            if(intersection3 != null){ intersection3.Print(); }
+            Console.WriteLine("Parallel? " + l5.IsParallelTo(l6).ToString());
+            Console.WriteLine("Equal? " + l5.IsEqualTo(l6).ToString());
 
         }
            

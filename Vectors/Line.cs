@@ -59,17 +59,38 @@ namespace Vectors
 		
 		public bool IsParallelTo(Line l)
 		{
-			return true;	
+			// Two lines are parallel if the normal vectors are parallel
+			return this.NormalVector.IsParallelTo( l.NormalVector );	
 		}
 
 		public bool IsEqualTo(Line l)
 		{
-			return true;	
+			// Two lines are equal (coincidental lines) iff vector connecting point on each line is
+			// orthoganal to the lines normal vectors
+			var basePointDiff = this.BasePoint.Minus(l.BasePoint); // Vector connecting a point on each line 
+			return this.IsParallelTo(l) && basePointDiff.IsOrthoganalTo(l.NormalVector);
 		}
 
 		public Vector FindIntersection(Line l)
 		{
-			return new Vector(new List<double>{0, 0});
+			if(this.IsParallelTo(l)){
+				Console.WriteLine("No intersection, the lines are parallel and/or equal");
+				return null;
+			} else {
+				// Given 2 lines: Ax + By = k1, Cx + Dy = k2
+				// x = (D*k1 - B*k2) / (A*D - B*C)
+				// y = (-C*k1 + A*k2) / (A*D - B*C)
+				var A = this.NormalVector.Coordinates[0];
+				var B = this.NormalVector.Coordinates[1];
+				var C = l.NormalVector.Coordinates[0];
+				var D = l.NormalVector.Coordinates[1];
+				var k1 = this.Constant;
+				var k2 = l.Constant;
+				
+				var x = (D*k1 - B*k2) / (A*D - B*C);
+				var y = (-1*C*k1 + A*k2) / (A*D - B*C);
+				return new Vector(new List<double>{x,y}); 
+			}
 		}
 		
 		private int FirstNonzeroIndex(Vector v)
