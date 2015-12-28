@@ -84,6 +84,39 @@ namespace Vectors
 			this.Rows = planesArray.ToList();
 		}
 		
+		public LinearSystem ComputeTriangularForm()
+		{
+			var system = this.DeepCopy();
+			var rowCount = this.Rows.Count;
+			// First make sure each row has a leading pivoting variable (non-zero)
+			for(var col = 0; (col + 1) < rowCount; col++){
+				var row = system.GetRow(col);
+				if(row.GetColumn(col) == 0){
+					var swapIndex = -1;
+					for(var swapRow = col + 1; swapRow < rowCount; swapRow++){
+						if(system.GetRow(swapRow).GetColumn(col) != 0){
+							swapIndex = swapRow;
+						}						
+					}
+					if(swapIndex >= 0){
+						system.SwapRows(col, swapIndex);
+					} else {
+						Console.WriteLine("No unique solution for system");
+						return null;
+					}
+				}
+			}
+			return system;
+		}
+		
+		public LinearSystem DeepCopy()
+		{
+			var newPlanes = new List<Plane>();
+			this.Rows.ForEach(r => {
+				newPlanes.Add(r.DeepCopy());
+			});
+			return new LinearSystem(newPlanes);
+		}
 				
 		private bool IsNearZero(double value)
 		{

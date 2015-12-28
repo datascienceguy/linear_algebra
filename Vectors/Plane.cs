@@ -91,9 +91,26 @@ namespace Vectors
 				   this.Constant == p.Constant;
 		}
 		
+		public Plane DeepCopy()
+		{
+			var newCoords = this.NormalVector.Coordinates.ToList();
+			var newNormalVector = new Vector(newCoords);
+			return new Plane(newNormalVector, this.Constant);
+		}
+		
 		public int FirstNonzeroIndex(Vector v)
 		{
 			return v.Coordinates.FindIndex(c => ! IsNearZero(c) );
+		}
+		
+		public int FirstNonzeroIndex()
+		{
+			return this.NormalVector.Coordinates.FindIndex(c => ! IsNearZero(c) );
+		}
+
+		public double GetColumn(int i)
+		{
+			return this.NormalVector.Coordinates.ElementAt(i);
 		}
 				
 		private bool IsNearZero(double value)

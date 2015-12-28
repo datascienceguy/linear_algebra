@@ -21,6 +21,10 @@ namespace Vectors
             Console.WriteLine("Problem 3");
             Problem3();
             Console.WriteLine("---------------");
+
+            Console.WriteLine("Problem 4");
+            Problem4();
+            Console.WriteLine("---------------");
         }
         
         private void Problem1()
@@ -179,6 +183,20 @@ Console.WriteLine("---------9-------");
             if(! (s.GetRow(0).Equals(newP0) && s.GetRow(1).Equals(newNewP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
                 Console.WriteLine("Test 9 failed");
             }  
-        }           
+        }   
+        
+        private void Problem4()
+        {
+            var p0 = new Plane(new Vector(new List<double>{0,0,1}), 1);
+            var p1 = new Plane(new Vector(new List<double>{1,0,0}), 2);
+            var p2 = new Plane(new Vector(new List<double>{1,1,0}), 2);
+            
+            var s = new LinearSystem(new List<Plane>{p0, p1, p2});
+            s.Print();
+            var triangular = s.ComputeTriangularForm();
+            if(triangular != null){
+                triangular.Print();
+            }
+        }                
     }
 }
