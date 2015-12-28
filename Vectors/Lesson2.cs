@@ -17,6 +17,10 @@ namespace Vectors
             Console.WriteLine("Problem 2");
             Problem2();
             Console.WriteLine("---------------");
+
+            Console.WriteLine("Problem 3");
+            Problem3();
+            Console.WriteLine("---------------");
         }
         
         private void Problem1()
@@ -98,6 +102,83 @@ namespace Vectors
             Console.WriteLine("Equal? " + p5.IsEqualTo(p6).ToString()); 
 
         }        
-           
+
+        private void Problem3()
+        {
+            var p0 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            var p1 = new Plane(new Vector(new List<double>{0,1,0}), 2);
+            var p2 = new Plane(new Vector(new List<double>{1,1,-1}), 3);
+            var p3 = new Plane(new Vector(new List<double>{1,0,-2}), 2);
+            
+            var s = new LinearSystem(new List<Plane>{p0, p1, p2, p3});
+            s.Print();
+            
+Console.WriteLine("---------1-------");
+            s.SwapRows(0, 1);
+            s.Print();
+            if(! (s.GetRow(0) == p1 && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 1 failed");
+            }
+            
+Console.WriteLine("---------2-------");
+            s.SwapRows(1, 3);
+            s.Print();
+            if(! (s.GetRow(0) == p1 && s.GetRow(1) == p3 && s.GetRow(2) == p2 && s.GetRow(3) == p0)){
+                Console.WriteLine("Test 2 failed");
+            }            
+            
+Console.WriteLine("---------3-------");
+            s.SwapRows(3, 1);
+            s.Print();
+            if(! (s.GetRow(0) == p1 && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 3 failed");
+            }          
+
+Console.WriteLine("---------4-------");
+            s.MultiplyCoefficientAndRow(1, 0);
+            s.Print();
+            if(! (s.GetRow(0).Equals(p1) && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 4 failed");
+            }          
+
+Console.WriteLine("---------5-------");
+            s.MultiplyCoefficientAndRow(-1, 2);
+            s.Print();
+            var newP2 = new Plane(new Vector(new List<double>{-1,-1,1}), -3);  
+            if(! (s.GetRow(0).Equals(p1) && s.GetRow(1) == p0 && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 5 failed");
+            }          
+            
+Console.WriteLine("---------6-------");
+            s.MultiplyCoefficientAndRow(10, 1);        
+            s.Print();
+            var newP1 = new Plane(new Vector(new List<double>{10,10,10}), 10);      
+            if(! (s.GetRow(0).Equals(p1) && s.GetRow(1).Equals(newP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 6 failed");
+            }                      
+            
+Console.WriteLine("---------7-------");
+            s.AddMultipleTimesRowToRow(0, 0, 1);
+            s.Print();
+            if(! (s.GetRow(0).Equals(p1) && s.GetRow(1).Equals(newP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 7 failed");
+            }  
+
+Console.WriteLine("---------8-------");
+            s.AddMultipleTimesRowToRow(1, 0, 1);
+            s.Print();
+            var newNewP1 = new Plane(new Vector(new List<double>{10,11,10}), 12);  
+            if(! (s.GetRow(0).Equals(p1) && s.GetRow(1).Equals(newNewP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 8 failed");
+            }  
+
+Console.WriteLine("---------9-------");
+            s.AddMultipleTimesRowToRow(-1, 1, 0);
+            s.Print();
+            var newP0 = new Plane(new Vector(new List<double>{-10,-10,-10}), -10);  
+            if(! (s.GetRow(0).Equals(newP0) && s.GetRow(1).Equals(newNewP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
+                Console.WriteLine("Test 9 failed");
+            }  
+        }           
     }
 }

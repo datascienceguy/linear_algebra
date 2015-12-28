@@ -45,12 +45,15 @@ namespace Vectors
 			var initIndex = FirstNonzeroIndex(this.NormalVector);
 			var output = "";
 			if( initIndex < 0 ){
-				output = "0";
+				output = "Empty plane";
 			} else {
 				var coords = this.NormalVector.Coordinates.ToArray();
 				for(var i = initIndex; i < coords.Count(); i++){
-					var prefix = coords[i] < 0 ? " - " : (i > initIndex) ? " + " : "";
-					output += prefix + Math.Abs(coords[i]) + "x_" + (i+1);					
+					var signPrefix = coords[i] < 0 ? " - " : (i > initIndex) ? " + " : "";
+					var numericPrefix = Math.Abs(coords[i]) == 1 ? "" : Math.Abs(coords[i]).ToString();
+					if(numericPrefix != "0"){
+						output += signPrefix + numericPrefix + "x_" + (i+1);					
+					}
 				}
 				output += " = " + this.Constant;			
 			}
@@ -82,7 +85,13 @@ namespace Vectors
 			return this.IsParallelTo(p) && basePointDiff.IsOrthoganalTo(p.NormalVector);
 		}
 		
-		private int FirstNonzeroIndex(Vector v)
+		public bool Equals(Plane p)
+		{
+			return this.NormalVector.Equals(p.NormalVector) &&
+				   this.Constant == p.Constant;
+		}
+		
+		public int FirstNonzeroIndex(Vector v)
 		{
 			return v.Coordinates.FindIndex(c => ! IsNearZero(c) );
 		}
