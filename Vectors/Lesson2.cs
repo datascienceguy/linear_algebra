@@ -14,6 +14,9 @@ namespace Vectors
             Problem1();
             Console.WriteLine("---------------");
 
+            Console.WriteLine("Problem 2");
+            Problem2();
+            Console.WriteLine("---------------");
         }
         
         private void Problem1()
@@ -58,6 +61,43 @@ namespace Vectors
             Console.WriteLine("Equal? " + l5.IsEqualTo(l6).ToString());
 
         }
+        
+       private void Problem2()
+        {
+            var n1 = new Vector(new List<double>{-0.412, 3.806, 0.728});
+            var c1 = -3.46;
+            var p1 = new Plane(n1, c1);
+            var n2 = new Vector(new List<double>{1.03, -9.515, -1.82});
+            var c2 = 8.65;
+            var p2 = new Plane(n2, c2);
+            p1.Print();
+            p2.Print();
+            Console.WriteLine("Parallel? " + p1.IsParallelTo(p2).ToString());
+            Console.WriteLine("Equal? " + p1.IsEqualTo(p2).ToString());            
+
+            var n3 = new Vector(new List<double>{2.611, 5.528, 0.283});
+            var c3 = 4.6;
+            var p3 = new Plane(n3, c3);
+            var n4 = new Vector(new List<double>{7.715, 8.306, 5.342});
+            var c4 = 3.76;
+            var p4 = new Plane(n4, c4);
+            p3.Print();
+            p4.Print();
+            Console.WriteLine("Parallel? " + p3.IsParallelTo(p4).ToString());
+            Console.WriteLine("Equal? " + p3.IsEqualTo(p4).ToString());    
+
+            var n5 = new Vector(new List<double>{-7.926, 8.625, -7.212});
+            var c5 = -7.952;
+            var p5 = new Plane(n5, c5);
+            var n6 = new Vector(new List<double>{-2.642, 2.875, -2.404});
+            var c6 = -2.443;
+            var p6 = new Plane(n6, c6);
+            p5.Print();
+            p6.Print();
+            Console.WriteLine("Parallel? " + p5.IsParallelTo(p6).ToString());
+            Console.WriteLine("Equal? " + p5.IsEqualTo(p6).ToString()); 
+
+        }        
            
     }
 }
