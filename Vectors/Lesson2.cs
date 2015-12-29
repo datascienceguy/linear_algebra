@@ -29,6 +29,10 @@ namespace Vectors
             Console.WriteLine("Problem 5");
             Problem5();
             Console.WriteLine("---------------");
+
+            Console.WriteLine("Problem 6");
+            Problem6();
+            Console.WriteLine("---------------");
         }
         
         private void Problem1()
@@ -342,6 +346,36 @@ namespace Vectors
             }  else {
                 Console.WriteLine("Test 4 failed (null result)");
             }  
-        }                      
+        }
+        
+        private void Problem6()
+        {
+            Console.WriteLine("---------1-------");
+            var p1 = new Plane(new Vector(new List<double>{5.862,1.178,-10.366}), -8.15);
+            var p2 = new Plane(new Vector(new List<double>{-2.931, -0.589, 5.183}), -4.075);
+            var s = new LinearSystem(new List<Plane>{p1, p2});
+            s.Print();
+            var r = s.ComputeRREF();
+            r.Print();
+
+            Console.WriteLine("---------2-------");
+            var p3 = new Plane(new Vector(new List<double>{8.631,5.112,-1.816}), -5.113);
+            var p4 = new Plane(new Vector(new List<double>{4.315,11.132,-5.27}), -6.775);
+            var p5 = new Plane(new Vector(new List<double>{-2.158, 3.01,-1.727}), -0.831);
+            var s2 = new LinearSystem(new List<Plane>{p3,p4,p5});
+            s2.Print();
+            var r2 = s2.ComputeRREF();
+            r2.Print();
+
+            Console.WriteLine("---------3-------");
+            var p6 = new Plane(new Vector(new List<double>{5.262,2.739,-9.878}), -3.441);
+            var p7 = new Plane(new Vector(new List<double>{5.111,6.358,7.638}), -2.152);
+            var p8 = new Plane(new Vector(new List<double>{2.016,-9.924,-1.367}), -9.278);
+            var p9 = new Plane(new Vector(new List<double>{2.167,-13.593,-18.883}), -10.567);
+            var s3 = new LinearSystem(new List<Plane>{p6,p7,p8,p9});
+            s3.Print();
+            var r3 = s3.ComputeRREF();
+            r3.Print();
+        }                 
     }
 }
