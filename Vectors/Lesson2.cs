@@ -25,6 +25,10 @@ namespace Vectors
             Console.WriteLine("Problem 4");
             Problem4();
             Console.WriteLine("---------------");
+
+            Console.WriteLine("Problem 5");
+            Problem5();
+            Console.WriteLine("---------------");
         }
         
         private void Problem1()
@@ -117,35 +121,35 @@ namespace Vectors
             var s = new LinearSystem(new List<Plane>{p0, p1, p2, p3});
             s.Print();
             
-Console.WriteLine("---------1-------");
+            Console.WriteLine("---------1-------");
             s.SwapRows(0, 1);
             s.Print();
             if(! (s.GetRow(0) == p1 && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
                 Console.WriteLine("Test 1 failed");
             }
             
-Console.WriteLine("---------2-------");
+            Console.WriteLine("---------2-------");
             s.SwapRows(1, 3);
             s.Print();
             if(! (s.GetRow(0) == p1 && s.GetRow(1) == p3 && s.GetRow(2) == p2 && s.GetRow(3) == p0)){
                 Console.WriteLine("Test 2 failed");
             }            
             
-Console.WriteLine("---------3-------");
+            Console.WriteLine("---------3-------");
             s.SwapRows(3, 1);
             s.Print();
             if(! (s.GetRow(0) == p1 && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
                 Console.WriteLine("Test 3 failed");
             }          
 
-Console.WriteLine("---------4-------");
+            Console.WriteLine("---------4-------");
             s.MultiplyCoefficientAndRow(1, 0);
             s.Print();
             if(! (s.GetRow(0).Equals(p1) && s.GetRow(1) == p0 && s.GetRow(2) == p2 && s.GetRow(3) == p3)){
                 Console.WriteLine("Test 4 failed");
             }          
 
-Console.WriteLine("---------5-------");
+            Console.WriteLine("---------5-------");
             s.MultiplyCoefficientAndRow(-1, 2);
             s.Print();
             var newP2 = new Plane(new Vector(new List<double>{-1,-1,1}), -3);  
@@ -153,7 +157,7 @@ Console.WriteLine("---------5-------");
                 Console.WriteLine("Test 5 failed");
             }          
             
-Console.WriteLine("---------6-------");
+            Console.WriteLine("---------6-------");
             s.MultiplyCoefficientAndRow(10, 1);        
             s.Print();
             var newP1 = new Plane(new Vector(new List<double>{10,10,10}), 10);      
@@ -161,14 +165,14 @@ Console.WriteLine("---------6-------");
                 Console.WriteLine("Test 6 failed");
             }                      
             
-Console.WriteLine("---------7-------");
+            Console.WriteLine("---------7-------");
             s.AddMultipleTimesRowToRow(0, 0, 1);
             s.Print();
             if(! (s.GetRow(0).Equals(p1) && s.GetRow(1).Equals(newP1) && s.GetRow(2).Equals(newP2) && s.GetRow(3) == p3)){
                 Console.WriteLine("Test 7 failed");
             }  
 
-Console.WriteLine("---------8-------");
+            Console.WriteLine("---------8-------");
             s.AddMultipleTimesRowToRow(1, 0, 1);
             s.Print();
             var newNewP1 = new Plane(new Vector(new List<double>{10,11,10}), 12);  
@@ -176,7 +180,7 @@ Console.WriteLine("---------8-------");
                 Console.WriteLine("Test 8 failed");
             }  
 
-Console.WriteLine("---------9-------");
+            Console.WriteLine("---------9-------");
             s.AddMultipleTimesRowToRow(-1, 1, 0);
             s.Print();
             var newP0 = new Plane(new Vector(new List<double>{-10,-10,-10}), -10);  
@@ -187,16 +191,157 @@ Console.WriteLine("---------9-------");
         
         private void Problem4()
         {
-            var p0 = new Plane(new Vector(new List<double>{0,0,1}), 1);
-            var p1 = new Plane(new Vector(new List<double>{1,0,0}), 2);
-            var p2 = new Plane(new Vector(new List<double>{1,1,0}), 2);
-            
-            var s = new LinearSystem(new List<Plane>{p0, p1, p2});
+            Console.WriteLine("---------1-------");
+            var p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            var p2 = new Plane(new Vector(new List<double>{0,1,1}), 2);
+            var s = new LinearSystem(new List<Plane>{p1, p2});
             s.Print();
-            var triangular = s.ComputeTriangularForm();
-            if(triangular != null){
-                triangular.Print();
-            }
-        }                
+
+            var t = s.ComputeTriangularForm();
+            if( t != null ){
+                t.Print();
+                if(! (t.GetRow(0).Equals(p1) && t.GetRow(1).Equals(p2))){
+                    Console.WriteLine("Test 1 failed");
+                }      
+            }  else {
+                Console.WriteLine("Test 1 failed (null result)");
+            }       
+
+            
+            Console.WriteLine("---------2-------");
+            p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{1,1,1}), 2);
+            s = new LinearSystem(new List<Plane>{p1, p2});
+            s.Print();
+
+            t = s.ComputeTriangularForm();
+            if( t != null ){
+                t.Print();
+                var newP2 = new Plane(null, 1);
+                if(! (t.GetRow(0).Equals(p1) && t.GetRow(1).Equals(newP2))){
+                    Console.WriteLine("Test 2 failed");
+                }    
+            }  else {
+                Console.WriteLine("Test 2 failed (null result)");
+            }       
+
+            Console.WriteLine("---------3-------");
+            p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{0,1,0}), 2);
+            var p3 = new Plane(new Vector(new List<double>{1,1,-1}), 3);
+            var p4 = new Plane(new Vector(new List<double>{1,0,-2}), 2);
+            s = new LinearSystem(new List<Plane>{p1, p2, p3, p4});
+            s.Print();
+
+            t = s.ComputeTriangularForm();
+            if( t != null ){
+                t.Print();
+                var newP3 = new Plane(new Vector(new List<double>{0,0,-2}), 2);
+                var newP4 = new Plane();
+                if(! (t.GetRow(0).Equals(p1) && t.GetRow(1).Equals(p2) && t.GetRow(2).Equals(newP3) && t.GetRow(3).Equals(newP4))){
+                    Console.WriteLine("Test 3 failed");
+                }    
+            }  else {
+                Console.WriteLine("Test 3 failed (null result)");
+            }       
+            
+            Console.WriteLine("---------4-------");
+            p1 = new Plane(new Vector(new List<double>{0,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{1,-1,1}), 2);
+            p3 = new Plane(new Vector(new List<double>{1,2,-5}), 3);
+            s = new LinearSystem(new List<Plane>{p1, p2, p3});
+            s.Print();
+
+            t = s.ComputeTriangularForm();
+            if( t != null ){
+                t.Print();
+                var newP1 = new Plane(new Vector(new List<double>{1,-1,1}), 2);
+                var newP2 = new Plane(new Vector(new List<double>{0,1,1}), 1);
+                var newP3 = new Plane(new Vector(new List<double>{0,0,-9}), -2);
+                if(! (t.GetRow(0).Equals(newP1) && t.GetRow(1).Equals(newP2) && t.GetRow(2).Equals(newP3))){
+                    Console.WriteLine("Test 4 failed");
+                }    
+            }  else {
+                Console.WriteLine("Test 4 failed (null result)");
+            }                            
+        }  
+        
+        private void Problem5()
+        {
+            Console.WriteLine("---------1-------");
+            var p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            var p2 = new Plane(new Vector(new List<double>{0,1,1}), 2);
+            var s = new LinearSystem(new List<Plane>{p1, p2});
+            s.Print();
+
+            var r = s.ComputeRREF();
+            if( r != null ){
+                r.Print();
+                var newP1 = new Plane(new Vector(new List<double>{1,0,0}), -1);
+                if(! (r.GetRow(0).Equals(newP1) && r.GetRow(1).Equals(p2))){
+                    Console.WriteLine("Test 1 failed");
+                }      
+            }  else {
+                Console.WriteLine("Test 1 failed (null result)");
+            }       
+            
+            Console.WriteLine("---------2-------");
+            p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{1,1,1}), 2);
+            s = new LinearSystem(new List<Plane>{p1, p2});
+            s.Print();
+
+            r = s.ComputeRREF();
+            if( r != null ){
+                r.Print();
+                var newP2 = new Plane(null, 1);
+                if(! (r.GetRow(0).Equals(p1) && r.GetRow(1).Equals(newP2))){
+                    Console.WriteLine("Test 2 failed");
+                }      
+            }  else {
+                Console.WriteLine("Test 2 failed (null result)");
+            }  
+
+            Console.WriteLine("---------3-------");
+            p1 = new Plane(new Vector(new List<double>{1,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{0,1,0}), 2);
+            var p3 = new Plane(new Vector(new List<double>{1,1,-1}), 3);
+            var p4 = new Plane(new Vector(new List<double>{1,0,-2}), 2);
+            s = new LinearSystem(new List<Plane>{p1, p2, p3, p4});
+            s.Print();
+
+            r = s.ComputeRREF();
+            if( r != null ){
+                r.Print();
+                var newP1 = new Plane(new Vector(new List<double>{1,0,0}), 0);
+                var newP3 = new Plane(new Vector(new List<double>{0,0,-2}), 2);
+                var newP4 = new Plane();
+                if(! (r.GetRow(0).Equals(newP1) && r.GetRow(1).Equals(p2) && r.GetRow(2).Equals(newP3) && r.GetRow(3).Equals(newP4))){
+                    Console.WriteLine("Test 3 failed");
+                }      
+            }  else {
+                Console.WriteLine("Test 3 failed (null result)");
+            }                
+
+            Console.WriteLine("---------4-------");
+            p1 = new Plane(new Vector(new List<double>{0,1,1}), 1);
+            p2 = new Plane(new Vector(new List<double>{1,-1,1}), 2);
+            p3 = new Plane(new Vector(new List<double>{1,2,-5}), 3);
+            s = new LinearSystem(new List<Plane>{p1, p2, p3});
+            s.Print();
+
+            r = s.ComputeRREF();
+            if( r != null ){
+                r.Print();
+                var newP1 = new Plane(new Vector(new List<double>{1,0,0}), 23.0/9);
+                var newP2 = new Plane(new Vector(new List<double>{0,1,0}), 7.0/9);
+                var newP3 = new Plane(new Vector(new List<double>{0,0,1}), 2.0/9);
+                if(! (r.GetRow(0).Equals(newP1) && r.GetRow(1).Equals(newP2) && r.GetRow(2).Equals(newP3))){
+                    Console.WriteLine("Test 4 failed");
+                }      
+            }  else {
+                Console.WriteLine("Test 4 failed (null result)");
+            }  
+        }                      
     }
 }

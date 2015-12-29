@@ -45,7 +45,7 @@ namespace Vectors
 			var initIndex = FirstNonzeroIndex(this.NormalVector);
 			var output = "";
 			if( initIndex < 0 ){
-				output = "Empty plane";
+				output = "Zero vector";
 			} else {
 				var coords = this.NormalVector.Coordinates.ToArray();
 				for(var i = initIndex; i < coords.Count(); i++){
@@ -55,8 +55,8 @@ namespace Vectors
 						output += signPrefix + numericPrefix + "x_" + (i+1);					
 					}
 				}
-				output += " = " + this.Constant;			
 			}
+			output += " = " + this.Constant;			
 			Console.WriteLine(output);
 		}
 		

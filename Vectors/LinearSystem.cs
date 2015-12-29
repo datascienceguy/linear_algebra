@@ -84,30 +84,86 @@ namespace Vectors
 			this.Rows = planesArray.ToList();
 		}
 		
-		public LinearSystem ComputeTriangularForm()
+		public LinearSystem ComputeRREF()
 		{
 			var system = this.DeepCopy();
-			var rowCount = this.Rows.Count;
-			// First make sure each row has a leading pivoting variable (non-zero)
-			for(var col = 0; (col + 1) < rowCount; col++){
-				var row = system.GetRow(col);
-				if(row.GetColumn(col) == 0){
-					var swapIndex = -1;
-					for(var swapRow = col + 1; swapRow < rowCount; swapRow++){
-						if(system.GetRow(swapRow).GetColumn(col) != 0){
-							swapIndex = swapRow;
-						}						
-					}
-					if(swapIndex >= 0){
-						system.SwapRows(col, swapIndex);
-					} else {
-						Console.WriteLine("No unique solution for system");
-						return null;
+			var t = system.ComputeTriangularForm();
+			var rowCount = system.Rows.Count;
+			var colCount = system.GetRow(0).Dimension;
+			for(var col = 1; col < colCount; col++){
+				for(var row = 0; row < rowCount && col < rowCount && row != col; row++){
+					var currValue = t.GetItem(row, col); 
+					if(currValue != 0){
+						var scalar = currValue * -1;
+						t.AddMultipleTimesRowToRow(scalar, col, row);					
 					}
 				}
 			}
-			return system;
+			
+			for(var row = colCount; row < rowCount; row++){
+				t.SetRow(row, new Plane());
+			}
+			
+			return t;			
 		}
+		
+		public LinearSystem ComputeTriangularForm()
+		{
+			var system = this.DeepCopy();
+			try {
+				system = this.PivotOrder(system);
+				system = this.Elimination(system);
+				return system;
+			} catch(Exception ex){
+				Console.WriteLine(ex.Message);
+				return null;			
+			}
+		}
+		
+		private LinearSystem PivotOrder(LinearSystem system)
+		{
+			var rowCount = system.Rows.Count;
+			var colCount = system.GetRow(0).Dimension;
+
+			// First make sure each row has a leading pivoting variable (non-zero)
+			for(var row = 0; row < rowCount && row < colCount; row++){
+				var pivotValue = system.GetItem(row, row);
+				if(pivotValue == 0){
+					var swapped = false;
+					for(var swapRow = row + 1; swapRow < rowCount; swapRow++){
+						if(!swapped && system.GetItem(swapRow, row) != 0){
+							system.SwapRows(row, swapRow);
+							swapped = true;
+						}
+					}
+				}
+			}
+			return system;			
+		}
+		
+		private LinearSystem Elimination(LinearSystem system)
+		{
+			var rowCount = system.Rows.Count;
+			var colCount = system.GetRow(0).Dimension;
+			for (int sourceRow = 0; sourceRow < Math.Min(rowCount, colCount); sourceRow++){
+				// Make pivot variable == 1
+				var sourceValue = system.GetItem(sourceRow, sourceRow);
+				if(sourceValue != 0){
+					var sourceScalar = 1/sourceValue;
+					system.MultiplyCoefficientAndRow(sourceScalar, sourceRow);
+				} 
+
+				// For all rows below pivot variable, make value zero
+				for (int destRow = sourceRow + 1; destRow < rowCount; destRow++){
+					var destValue = system.GetItem(destRow, sourceRow);
+					var destScalar = destValue < 0 ? destValue : -1 * destValue;
+					if(destScalar != 0){
+						system.AddMultipleTimesRowToRow(destScalar, sourceRow, destRow);
+					}
+				}
+			}			
+			return system;
+		}		
 		
 		public LinearSystem DeepCopy()
 		{
@@ -117,6 +173,11 @@ namespace Vectors
 			});
 			return new LinearSystem(newPlanes);
 		}
+				
+		private double GetItem(int row, int col)
+		{
+			return this.GetRow(row).GetColumn(col);
+		}				
 				
 		private bool IsNearZero(double value)
 		{
